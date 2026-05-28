@@ -1,5 +1,5 @@
 {
-  "name": "leadpush-node",
+  "name": "@leadpush/sdk-node",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.cjs",
@@ -34,7 +34,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.21.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",

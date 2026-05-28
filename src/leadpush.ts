@@ -8,7 +8,7 @@ declare const __LEADPUSH_SDK_VERSION__: string
 /**
  * Name of this SDK package.
  */
-export const SDK_NAME = 'leadpush-node'
+export const SDK_NAME = '@leadpush/sdk-node'
 
 /**
  * Version of the installed SDK package.
