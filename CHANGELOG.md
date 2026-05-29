@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.3
+
+### Patch Changes
+
+- 39e77c5: Fix ci releases
+
 ## 1.0.2
 
 ### Patch Changes
