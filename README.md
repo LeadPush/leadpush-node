@@ -267,6 +267,28 @@ pnpm test
 pnpm run build
 ```
 
+## Releasing
+
+Releases are managed with Changesets and GitHub Actions.
+
+For user-facing changes, add a changeset in the same pull request:
+
+```sh
+pnpm changeset
+```
+
+When changes land on `main`, the release workflow opens or updates a `Version Packages` pull request. Merging that pull request publishes the package to npm and creates a GitHub release.
+
+The release workflow is configured for npm Trusted Publishing through GitHub OIDC. Configure npm trusted publishing for this package with:
+
+- package: `@leadpush/sdk-node`
+- repository: this GitHub repository
+- workflow filename: `release.yml`
+- environment: none
+- allowed action: `npm publish`
+
+Do not add an `NPM_TOKEN` secret when using trusted publishing.
+
 ## License
 
 MIT
