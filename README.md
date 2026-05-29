@@ -2,6 +2,8 @@
 
 Official TypeScript SDK for the Leadpush API.
 
+Create a Leadpush account at [leadpush.io](https://leadpush.io).
+
 ## Installation
 
 ```sh
@@ -59,6 +61,8 @@ Defaults:
 
 ## Contacts
 
+**Get A Contact**
+
 ```ts
 const contact = await client.contacts().get('contact_uuid')
 
@@ -66,7 +70,7 @@ console.log(contact.uuid)
 console.log(contact.attributes.email)
 ```
 
-Create a contact:
+**Create A Contact**
 
 ```ts
 const contact = await client.contacts().create({
@@ -78,7 +82,7 @@ const contact = await client.contacts().create({
 })
 ```
 
-Update by id:
+**Update By Id**
 
 ```ts
 const contact = await client.contacts().update('contact_uuid', {
@@ -89,7 +93,7 @@ const contact = await client.contacts().update('contact_uuid', {
 })
 ```
 
-Update from a model:
+**Update From A Model**
 
 ```ts
 const contact = await client.contacts().get('contact_uuid')
@@ -100,17 +104,19 @@ contact.setAttribute('first_name', 'Updated')
 await contact.update()
 ```
 
-Subscribe or unsubscribe:
+**Subscribe Or Unsubscribe**
 
 ```ts
 await contact.subscribe()
 await contact.unsubscribe()
 ```
 
-Contact events:
+**Contact Events**
 
 ```ts
-const events = await client.contacts().events('contact_uuid').list()
+const events = await client.contacts().events('contact_uuid').list({
+  search: 'purchase'
+})
 ```
 
 You can also access events from an attached contact model:
@@ -120,9 +126,22 @@ const contact = await client.contacts().get('contact_uuid')
 const events = await contact.events().list()
 ```
 
+**Create A Contact Event**
+
+```ts
+await client.contacts().events('contact_uuid').create({
+  event_name: 'purchase',
+  attributes: {
+    plan: 'enterprise'
+  }
+})
+```
+
+Contact event creation resolves when the API accepts the event. The create endpoint does not return the created event.
+
 ## Pagination
 
-List one page:
+**List One Page**
 
 ```ts
 const page = await client.contacts().list({
@@ -134,7 +153,7 @@ console.log(page.data)
 console.log(page.meta.has_next)
 ```
 
-Iterate every model across all pages:
+**Iterate Every Model**
 
 ```ts
 for await (const contact of client.contacts().listAll({ per_page: 100 })) {
@@ -142,7 +161,7 @@ for await (const contact of client.contacts().listAll({ per_page: 100 })) {
 }
 ```
 
-Iterate page-by-page:
+**Iterate Page By Page**
 
 ```ts
 for await (const page of client.contacts().cursor({ per_page: 100 })) {
@@ -151,6 +170,8 @@ for await (const page of client.contacts().cursor({ per_page: 100 })) {
 ```
 
 ## Fields
+
+**List Fields**
 
 ```ts
 const fields = await client.fields().list({
@@ -164,7 +185,7 @@ const fields = await client.fields().list({
 })
 ```
 
-Create a field:
+**Create A Field**
 
 ```ts
 const field = await client.fields().create({
@@ -178,6 +199,8 @@ const field = await client.fields().create({
 
 ## Suppressions
 
+**List Suppressions**
+
 ```ts
 const suppressions = await client.suppressions().list({
   search: 'blocked@example.com',
@@ -190,7 +213,7 @@ const suppressions = await client.suppressions().list({
 })
 ```
 
-Create a suppression:
+**Create A Suppression**
 
 ```ts
 const suppression = await client.suppressions().create({
@@ -205,13 +228,19 @@ Suppressions do not support updates. Calling `client.suppressions().update(...)`
 
 Use `get`, `post`, or `delete` for endpoints that do not have a typed resource yet.
 
+**GET**
+
 ```ts
 const response = await client.get('contacts/contact_uuid/events')
 ```
 
+**POST**
+
 ```ts
 const response = await client.post('contacts/contact_uuid/subscribe')
 ```
+
+**DELETE**
 
 ```ts
 await client.delete('contacts/contact_uuid')
