@@ -14,6 +14,7 @@ export function createClient(key = 'test-key', options: Partial<Options> = {}): 
 
 export function expectedHeaders(headers: Record<string, string> = {}, key = 'test-key'): Record<string, string> {
     return {
+        Accept: 'application/json',
         Authorization: `Bearer ${key}`,
         'X-Leadpush-API-Version': API_VERSION,
         'X-Leadpush-SDK': SDK_NAME,
