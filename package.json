@@ -38,6 +38,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "version": "changeset version"
   },
+  "repository": {
+    "url": "https://github.com/LeadPush/leadpush-node"
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
