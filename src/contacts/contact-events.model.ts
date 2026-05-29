@@ -1,6 +1,24 @@
 import { Model } from '../model'
 
-export type ContactEventData = Record<string, unknown>
+export type ContactEventAttributes = Record<string, unknown>
+
+/**
+ * Raw contact event data returned by the API.
+ */
+export interface ContactEventData {
+    uuid: string
+    event_name: string
+    attributes: ContactEventAttributes | null
+    created_at: string
+}
+
+/**
+ * Payload accepted by contact event creation.
+ */
+export interface CreateContactEventData {
+    event_name: string
+    attributes?: ContactEventAttributes
+}
 
 export type UpdateContactEventData = Record<string, never>
 
@@ -9,39 +27,39 @@ export type UpdateContactEventData = Record<string, never>
  */
 export class ContactEventModel extends Model<ContactEventData, UpdateContactEventData, ContactEventModel> {
     /**
-     * Event id, when present in the API response.
+     * Event id.
      */
-    get uuid(): string | undefined {
-        return this.getString('uuid')
+    get uuid(): string {
+        return this.data.uuid
     }
 
     /**
-     * Event type, when present in the API response.
+     * Event name.
      */
-    get type(): string | undefined {
-        return this.getString('type')
+    get eventName(): string {
+        return this.data.event_name
     }
 
     /**
-     * Event creation date, when present in the API response.
+     * Event name.
+     *
+     * @deprecated Use `eventName`.
      */
-    get createdAt(): Date | undefined {
-        const value = this.data.created_at
-
-        if (typeof value !== 'string') {
-            return undefined
-        }
-
-        return new Date(value)
+    get type(): string {
+        return this.eventName
     }
 
-    private getString(key: string): string | undefined {
-        const value = this.data[key]
+    /**
+     * Event attributes.
+     */
+    get attributes(): ContactEventData['attributes'] {
+        return this.data.attributes
+    }
 
-        if (typeof value !== 'string') {
-            return undefined
-        }
-
-        return value
+    /**
+     * Event creation date.
+     */
+    get createdAt(): Date {
+        return new Date(this.data.created_at)
     }
 }
