@@ -1,4 +1,4 @@
-import { ListableResource, type ListParams, type ResourceResponse } from '../entity'
+import { ListableResource, type ListParams } from '../entity'
 import type { Leadpush } from '../leadpush'
 import {
     ContactEventModel,
@@ -55,13 +55,8 @@ export class ContactEvents extends ListableResource<
      *
      * @param data - Contact event creation payload.
      */
-    async create(data: CreateContactEventData): Promise<ContactEventModel> {
-        const payload = await this.postResource<ResourceResponse<ContactEventData>>(
-            undefined,
-            this.serializeCreateData(data)
-        )
-
-        return this.makeModel(payload.data)
+    async create(data: CreateContactEventData): Promise<void> {
+        await this.postResource<void>(undefined, this.serializeCreateData(data))
     }
 
     private serializeCreateData(data: CreateContactEventData): CreateContactEventRequest {

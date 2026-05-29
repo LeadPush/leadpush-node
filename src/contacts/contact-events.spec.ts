@@ -2,7 +2,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { ContactEventModel } from './contact-events.model'
 import { contactData, contactEventData, createContactEventData } from '../test-support/fixtures'
-import { createClient, expectedHeaders, mockJsonResponse, mockJsonResponses, testBaseUrl } from '../test-support/http'
+import {
+    createClient,
+    expectedHeaders,
+    mockEmptyResponse,
+    mockJsonResponse,
+    mockJsonResponses,
+    testBaseUrl
+} from '../test-support/http'
 
 describe('Contact events', () => {
     afterEach(() => {
@@ -77,15 +84,12 @@ describe('Contact events', () => {
     })
 
     it('creates contact events', async () => {
-        const fetchMock = mockJsonResponse({
-            data: contactEventData
+        const fetchMock = mockEmptyResponse({
+            status: 204
         })
-        const event = await createClient().contacts().events(contactData.uuid).create(createContactEventData)
+        const result = await createClient().contacts().events(contactData.uuid).create(createContactEventData)
 
-        expect(event).toBeInstanceOf(ContactEventModel)
-        expect(event.uuid).toBe(contactEventData.uuid)
-        expect(event.eventName).toBe(contactEventData.event_name)
-        expect(event.attributes).toEqual(contactEventData.attributes)
+        expect(result).toBeUndefined()
         expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/${contactData.uuid}/events`, {
             method: 'POST',
             headers: expectedHeaders({
@@ -99,17 +103,14 @@ describe('Contact events', () => {
     })
 
     it('creates contact events without attributes', async () => {
-        const fetchMock = mockJsonResponse({
-            data: {
-                ...contactEventData,
-                attributes: null
-            }
+        const fetchMock = mockEmptyResponse({
+            status: 204
         })
-        const event = await createClient().contacts().events(contactData.uuid).create({
+        const result = await createClient().contacts().events(contactData.uuid).create({
             event_name: 'test'
         })
 
-        expect(event.attributes).toBeNull()
+        expect(result).toBeUndefined()
         expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/${contactData.uuid}/events`, {
             method: 'POST',
             headers: expectedHeaders({

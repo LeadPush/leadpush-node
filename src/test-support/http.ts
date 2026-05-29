@@ -46,6 +46,15 @@ export function mockJsonResponse(payload: unknown, init?: ResponseInit): ReturnT
     return fetchMock
 }
 
+export function mockEmptyResponse(init: ResponseInit = {}): ReturnType<typeof vi.fn<typeof fetch>> {
+    const fetchMock = vi.fn<typeof fetch>()
+
+    fetchMock.mockResolvedValue(new Response(null, init))
+    vi.stubGlobal('fetch', fetchMock)
+
+    return fetchMock
+}
+
 export function mockJsonResponses(
     ...responses: Array<{ payload: unknown, init?: ResponseInit }>
 ): ReturnType<typeof vi.fn<typeof fetch>> {
