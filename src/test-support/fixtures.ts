@@ -3,7 +3,7 @@ import type {
     CreateContactData,
     UpdateContactData
 } from '../contacts/contacts.model'
-import type { ContactEventData } from '../contacts/contact-events.model'
+import type { ContactEventData, CreateContactEventData } from '../contacts/contact-events.model'
 import type { CreateFieldData, FieldData, FieldFilter } from '../fields/fields.model'
 import type { SuppressionData, SuppressionFilter } from '../suppressions/suppressions.model'
 
@@ -54,13 +54,20 @@ export const updateContactData = {
 } satisfies UpdateContactData
 
 export const contactEventData = {
-    uuid: 'event-id',
-    type: 'opened',
-    created_at: '2026-05-27T02:37:41.000000Z',
-    message: {
-        uuid: 'message-id'
-    }
+    uuid: '6a19c3c2673f43e71a0f3882',
+    event_name: 'purchase',
+    attributes: {
+        plan: 'enterprise'
+    },
+    created_at: '2026-05-29T16:50:10.000000Z'
 } satisfies ContactEventData
+
+export const createContactEventData = {
+    event_name: 'purchase',
+    attributes: {
+        plan: 'enterprise'
+    }
+} satisfies CreateContactEventData
 
 export const fieldData = {
     uuid: 'field-uuid',

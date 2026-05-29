@@ -1,8 +1,23 @@
-import { ListableResource, type ListParams } from '../entity'
+import { ListableResource, type ListParams, type ResourceResponse } from '../entity'
 import type { Leadpush } from '../leadpush'
-import { ContactEventModel, type ContactEventData, type UpdateContactEventData } from './contact-events.model'
+import {
+    ContactEventModel,
+    type ContactEventData,
+    type CreateContactEventData,
+    type UpdateContactEventData
+} from './contact-events.model'
 
-export type ListContactEventsParams = ListParams
+export interface ListContactEventsParams extends ListParams {
+    /**
+     * Search contact events by event name.
+     */
+    search?: string
+}
+
+interface CreateContactEventRequest {
+    event_name: string
+    attributes?: string
+}
 
 /**
  * Contact events API resource.
@@ -33,5 +48,31 @@ export class ContactEvents extends ListableResource<
         super(client)
 
         this.endpoint = ['contacts', contactId, 'events']
+    }
+
+    /**
+     * Create a contact event.
+     *
+     * @param data - Contact event creation payload.
+     */
+    async create(data: CreateContactEventData): Promise<ContactEventModel> {
+        const payload = await this.postResource<ResourceResponse<ContactEventData>>(
+            undefined,
+            this.serializeCreateData(data)
+        )
+
+        return this.makeModel(payload.data)
+    }
+
+    private serializeCreateData(data: CreateContactEventData): CreateContactEventRequest {
+        const request: CreateContactEventRequest = {
+            event_name: data.event_name
+        }
+
+        if (data.attributes !== undefined) {
+            request.attributes = JSON.stringify(data.attributes)
+        }
+
+        return request
     }
 }
