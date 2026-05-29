@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.5
+
+### Patch Changes
+
+- 0410488: Update create contact event return type
+
 ## 1.0.4
 
 ### Patch Changes
