@@ -155,11 +155,12 @@ export class HttpClient {
 
     private getHeaders(data?: object): Record<string, string> {
         const headers: Record<string, string> = {
-            ...this.options.headers,
+            Accept: 'application/json',
             Authorization: `Bearer ${this.options.apiKey}`,
             'X-Leadpush-API-Version': this.options.apiVersion,
             'X-Leadpush-SDK': this.options.sdkName,
-            'X-Leadpush-SDK-Version': this.options.sdkVersion
+            'X-Leadpush-SDK-Version': this.options.sdkVersion,
+            ...this.options.headers
         }
 
         if (this.shouldSendUserAgentHeader()) {
