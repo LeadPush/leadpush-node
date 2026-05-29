@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.4
+
+### Patch Changes
+
+- 5a9ccae: Add supporting contact events api
+
 ## 1.0.3
 
 ### Patch Changes
