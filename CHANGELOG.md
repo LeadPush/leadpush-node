@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.6
+
+### Patch Changes
+
+- c75584d: Allow contact lookups to use either a contact uuid or workspace identity value.
+
 ## 1.0.5
 
 ### Patch Changes
