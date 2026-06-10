@@ -218,11 +218,11 @@ export class HttpClient {
     }
 
     private getPathSegments(path: RequestPath): string[] {
-        const segments = typeof path === 'string'
-            ? [path]
-            : [...path]
+        if (typeof path === 'string') {
+            return path.split('/').filter((part) => part.length > 0)
+        }
 
-        return segments.flatMap((segment) => segment.split('/').filter((part) => part.length > 0))
+        return path.filter((part) => part.length > 0)
     }
 
     private serializeQueryValue(value: Exclude<RequestParams[string], undefined>): string {

@@ -60,4 +60,16 @@ describe('HTTP requests', () => {
             headers: expectedHeaders()
         })
     })
+
+    it('encodes array path segments without splitting them', async () => {
+        const fetchMock = mockJsonResponse({
+            ok: true
+        })
+        const result = await createClient().get<{ ok: boolean }>(['contacts', 'team/a@example.com', 'events'])
+
+        expect(result.ok).toBe(true)
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/team%2Fa%40example.com/events`, {
+            headers: expectedHeaders()
+        })
+    })
 })
