@@ -6,6 +6,13 @@ export type AttributeValue = string | number | boolean | null
 export type Attributes = Record<string, AttributeValue>
 
 /**
+ * Contact lookup identifier accepted by contact endpoints.
+ *
+ * This can be either a contact uuid or the workspace identity field value.
+ */
+export type ContactIdentifier = string
+
+/**
  * Raw contact data returned by the API.
  */
 export interface ContactData<TAttributes extends Attributes = Attributes> {

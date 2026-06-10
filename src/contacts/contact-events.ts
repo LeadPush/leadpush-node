@@ -6,6 +6,7 @@ import {
     type CreateContactEventData,
     type UpdateContactEventData
 } from './contact-events.model'
+import type { ContactIdentifier } from './contacts.model'
 
 export interface ListContactEventsParams extends ListParams {
     /**
@@ -42,9 +43,9 @@ export class ContactEvents extends ListableResource<
      * Create a contact events resource handler.
      *
      * @param client - Leadpush API client.
-     * @param contactId - Contact id.
+     * @param contactId - Contact uuid or workspace identity value.
      */
-    constructor(client: Leadpush, readonly contactId: string) {
+    constructor(client: Leadpush, readonly contactId: ContactIdentifier) {
         super(client)
 
         this.endpoint = ['contacts', contactId, 'events']

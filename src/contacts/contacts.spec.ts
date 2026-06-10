@@ -30,6 +30,21 @@ describe('Contacts', () => {
         })
     })
 
+    it('gets a contact by workspace identity value', async () => {
+        const fetchMock = mockJsonResponse({
+            data: contactData
+        })
+
+        const contact = await createClient().contacts().get('contact@example.com')
+
+        expect(contact).toBeInstanceOf(ContactModel)
+        expect(contact.uuid).toBe(contactData.uuid)
+        expect(contact.attributes.email).toBe(contactData.attributes.email)
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com`, {
+            headers: expectedHeaders()
+        })
+    })
+
     it('creates a contact', async () => {
         const fetchMock = mockJsonResponse({
             data: contactData
@@ -64,6 +79,55 @@ describe('Contacts', () => {
                 'Content-Type': 'application/json'
             }),
             body: JSON.stringify(updateContactData)
+        })
+    })
+
+    it('updates a contact by workspace identity value', async () => {
+        const fetchMock = mockJsonResponse({
+            data: updatedContactData
+        })
+
+        const contact = await createClient().contacts().update('contact@example.com', updateContactData)
+
+        expect(contact).toBeInstanceOf(ContactModel)
+        expect(contact.uuid).toBe(contactData.uuid)
+        expect(contact.attributes.first_name).toBe('Updated')
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com`, {
+            method: 'POST',
+            headers: expectedHeaders({
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify(updateContactData)
+        })
+    })
+
+    it('subscribes a contact by workspace identity value', async () => {
+        const fetchMock = mockJsonResponse({
+            data: contactData
+        })
+
+        const contact = await createClient().contacts().subscribe('contact@example.com')
+
+        expect(contact).toBeInstanceOf(ContactModel)
+        expect(contact.subscribed).toBe(true)
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com/subscribe`, {
+            method: 'POST',
+            headers: expectedHeaders()
+        })
+    })
+
+    it('unsubscribes a contact by workspace identity value', async () => {
+        const fetchMock = mockJsonResponse({
+            data: unsubscribedContactData
+        })
+
+        const contact = await createClient().contacts().unsubscribe('contact@example.com')
+
+        expect(contact).toBeInstanceOf(ContactModel)
+        expect(contact.subscribed).toBe(false)
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com/unsubscribe`, {
+            method: 'POST',
+            headers: expectedHeaders()
         })
     })
 

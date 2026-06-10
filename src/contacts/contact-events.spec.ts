@@ -49,6 +49,26 @@ describe('Contact events', () => {
         )
     })
 
+    it('lists contact events by workspace identity value', async () => {
+        const fetchMock = mockJsonResponse({
+            data: [contactEventData],
+            meta: {
+                current_page: 1,
+                per_page: 10,
+                total: 1,
+                last_page: 1,
+                has_next: false
+            }
+        })
+        const events = await createClient().contacts().events('contact@example.com').list()
+
+        expect(events.data[0]).toBeInstanceOf(ContactEventModel)
+        expect(events.data[0]?.uuid).toBe(contactEventData.uuid)
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com/events`, {
+            headers: expectedHeaders()
+        })
+    })
+
     it('lists contact events from an attached contact model', async () => {
         const fetchMock = mockJsonResponses(
             {
@@ -91,6 +111,25 @@ describe('Contact events', () => {
 
         expect(result).toBeUndefined()
         expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/${contactData.uuid}/events`, {
+            method: 'POST',
+            headers: expectedHeaders({
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify({
+                event_name: createContactEventData.event_name,
+                attributes: JSON.stringify(createContactEventData.attributes)
+            })
+        })
+    })
+
+    it('creates contact events by workspace identity value', async () => {
+        const fetchMock = mockEmptyResponse({
+            status: 204
+        })
+        const result = await createClient().contacts().events('contact@example.com').create(createContactEventData)
+
+        expect(result).toBeUndefined()
+        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts/contact%40example.com/events`, {
             method: 'POST',
             headers: expectedHeaders({
                 'Content-Type': 'application/json'

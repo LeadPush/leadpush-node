@@ -61,10 +61,13 @@ Defaults:
 
 ## Contacts
 
+Contact methods that accept a contact identifier can use either the contact uuid or the workspace identity field value, such as an email address.
+
 **Get A Contact**
 
 ```ts
 const contact = await client.contacts().get('contact_uuid')
+const sameContact = await client.contacts().get('person@example.com')
 
 console.log(contact.uuid)
 console.log(contact.attributes.email)
@@ -82,7 +85,7 @@ const contact = await client.contacts().create({
 })
 ```
 
-**Update By Id**
+**Update A Contact**
 
 ```ts
 const contact = await client.contacts().update('contact_uuid', {
@@ -90,6 +93,10 @@ const contact = await client.contacts().update('contact_uuid', {
   attributes: {
     first_name: 'Updated'
   }
+})
+
+await client.contacts().update('person@example.com', {
+  subscribed: true
 })
 ```
 
@@ -107,6 +114,9 @@ await contact.update()
 **Subscribe Or Unsubscribe**
 
 ```ts
+await client.contacts().subscribe('person@example.com')
+await client.contacts().unsubscribe('person@example.com')
+
 await contact.subscribe()
 await contact.unsubscribe()
 ```
@@ -117,6 +127,8 @@ await contact.unsubscribe()
 const events = await client.contacts().events('contact_uuid').list({
   search: 'purchase'
 })
+
+const sameEvents = await client.contacts().events('person@example.com').list()
 ```
 
 You can also access events from an attached contact model:
@@ -134,6 +146,10 @@ await client.contacts().events('contact_uuid').create({
   attributes: {
     plan: 'enterprise'
   }
+})
+
+await client.contacts().events('person@example.com').create({
+  event_name: 'login'
 })
 ```
 

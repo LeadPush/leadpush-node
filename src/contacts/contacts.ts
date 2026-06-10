@@ -1,6 +1,16 @@
 import { Entity } from '../entity'
 import { ContactEvents } from './contact-events'
-import { ContactModel, type ContactData, type CreateContactData, type UpdateContactData } from './contacts.model'
+import {
+    ContactModel,
+    type ContactData,
+    type ContactIdentifier,
+    type CreateContactData,
+    type UpdateContactData
+} from './contacts.model'
+
+interface ContactResponse {
+    data: ContactData
+}
 
 /**
  * Contact API resource.
@@ -17,11 +27,52 @@ export class Contacts extends Entity<ContactData, ContactModel, CreateContactDat
     override model = ContactModel
 
     /**
-     * Access event API operations for a contact.
+     * Get a contact by uuid or workspace identity value.
      *
-     * @param contactId - Contact id.
+     * @param identifier - Contact uuid or workspace identity value.
      */
-    events(contactId: string): ContactEvents {
-        return new ContactEvents(this.client, contactId)
+    override async get(identifier: ContactIdentifier): Promise<ContactModel> {
+        return await super.get(identifier)
+    }
+
+    /**
+     * Update a contact by uuid or workspace identity value.
+     *
+     * @param identifier - Contact uuid or workspace identity value.
+     * @param data - Contact update payload.
+     */
+    override async update(identifier: ContactIdentifier, data: UpdateContactData): Promise<ContactModel> {
+        return await super.update(identifier, data)
+    }
+
+    /**
+     * Subscribe a contact by uuid or workspace identity value.
+     *
+     * @param identifier - Contact uuid or workspace identity value.
+     */
+    async subscribe(identifier: ContactIdentifier): Promise<ContactModel> {
+        const payload = await this.postResource<ContactResponse>([identifier, 'subscribe'])
+
+        return this.makeModel(payload.data)
+    }
+
+    /**
+     * Unsubscribe a contact by uuid or workspace identity value.
+     *
+     * @param identifier - Contact uuid or workspace identity value.
+     */
+    async unsubscribe(identifier: ContactIdentifier): Promise<ContactModel> {
+        const payload = await this.postResource<ContactResponse>([identifier, 'unsubscribe'])
+
+        return this.makeModel(payload.data)
+    }
+
+    /**
+     * Access event API operations for a contact by uuid or workspace identity value.
+     *
+     * @param identifier - Contact uuid or workspace identity value.
+     */
+    events(identifier: ContactIdentifier): ContactEvents {
+        return new ContactEvents(this.client, identifier)
     }
 }
