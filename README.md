@@ -253,6 +253,37 @@ const domain = await client.domains().get('domain_uuid')
 const addresses = await domain.addresses().list()
 ```
 
+## Emails
+
+**Send An Email**
+
+```ts
+const send = await client.emails().send({
+  from: 'sender@example.com',
+  subject: 'Developer API email',
+  html: '<p>Hello world</p>',
+  text: 'Hello world',
+  to: [
+    'known@example.com',
+    'other@example.com'
+  ],
+  bcc: [
+    'audit@example.com'
+  ],
+  reply_to: 'reply@example.com',
+  headers: {
+    'X-Correlation-ID': 'abc-123',
+    'Auto-Submitted': 'auto-generated'
+  }
+})
+
+console.log(send.accepted)
+console.log(send.messageCount)
+console.log(send.messages[0]?.uuid)
+```
+
+The `from` address must be a verified sendable address in the API key workspace. Provide `html`, `text`, or both, and at least one recipient across `to` and `bcc`. Leadpush creates one tracked message per unique recipient and returns those message identifiers with initial `pending` status.
+
 ## Fields
 
 **List Fields**
