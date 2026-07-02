@@ -10,6 +10,7 @@ import type {
     DomainAddressData
 } from '../domains/domain-addresses.model'
 import type { CreateDomainData, DomainData } from '../domains/domains.model'
+import type { EmailSendData, SendEmailData } from '../emails/emails.model'
 import type { SuppressionData, SuppressionFilter } from '../suppressions/suppressions.model'
 
 export const contactData = {
@@ -171,6 +172,61 @@ export const createDomainAddressData = {
     company_zip: '10001',
     company_country: 'US'
 } satisfies CreateDomainAddressData
+
+export const createEmailData = {
+    from: 'sender@developer.test',
+    subject: 'Developer API email',
+    html: '<p>Hello world</p>',
+    text: 'Hello world',
+    to: [
+        'known@example.test',
+        'other@example.test',
+        'third@example.test'
+    ],
+    bcc: [
+        'audit@example.test'
+    ],
+    reply_to: 'reply@example.test',
+    headers: {
+        'X-Correlation-ID': 'abc-123',
+        'Auto-Submitted': 'auto-generated'
+    }
+} satisfies SendEmailData
+
+export const emailSendData = {
+    accepted: true,
+    message_count: 4,
+    messages: [
+        {
+            uuid: 'message-known-uuid',
+            recipient: 'known@example.test',
+            type: 'to',
+            from: 'sender@developer.test',
+            status: 'pending'
+        },
+        {
+            uuid: 'message-other-uuid',
+            recipient: 'other@example.test',
+            type: 'to',
+            from: 'sender@developer.test',
+            status: 'pending'
+        },
+        {
+            uuid: 'message-third-uuid',
+            recipient: 'third@example.test',
+            type: 'to',
+            from: 'sender@developer.test',
+            status: 'pending'
+        },
+        {
+            uuid: 'message-audit-uuid',
+            recipient: 'audit@example.test',
+            type: 'bcc',
+            from: 'sender@developer.test',
+            status: 'pending'
+        }
+    ]
+} satisfies EmailSendData
 
 export const suppressionData = {
     uuid: 'suppression-id',
