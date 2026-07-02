@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.8
+
+### Patch Changes
+
+- f69a263: Add SDK support for the send email api
+
 ## 1.0.7
 
 ### Patch Changes
