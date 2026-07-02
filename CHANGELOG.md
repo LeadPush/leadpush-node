@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.0.7
+
+### Patch Changes
+
+- 62e64be: Add typed domain and domain address api resources
+
 ## 1.0.6
 
 ### Patch Changes
