@@ -5,6 +5,11 @@ import type {
 } from '../contacts/contacts.model'
 import type { ContactEventData, CreateContactEventData } from '../contacts/contact-events.model'
 import type { CreateFieldData, FieldData, FieldFilter } from '../fields/fields.model'
+import type {
+    CreateDomainAddressData,
+    DomainAddressData
+} from '../domains/domain-addresses.model'
+import type { CreateDomainData, DomainData } from '../domains/domains.model'
 import type { SuppressionData, SuppressionFilter } from '../suppressions/suppressions.model'
 
 export const contactData = {
@@ -95,6 +100,77 @@ export const fieldFilters = [
         value: ['text']
     }
 ] satisfies FieldFilter[]
+
+export const domainData = {
+    uuid: 'domain-uuid',
+    name: 'example.test',
+    domain: 'example.test',
+    verified: false,
+    provider: 'leadpush',
+    status: 'pending',
+    verification: 'pending',
+    mail_from_domain: 'bounces.example.test',
+    mail_from_verified: false,
+    dns: [
+        {
+            type: 'CNAME',
+            name: 'default._domainkey.example.test',
+            value: 'default._domainkey.smtp-domain-1.leadpush.net.',
+            is_valid: false
+        },
+        {
+            type: 'MX',
+            name: 'bounces.example.test',
+            value: '10 bounces.leadpush.net',
+            is_valid: false
+        }
+    ],
+    updated_at: '2026-06-20T12:00:00.000Z',
+    created_at: '2026-06-20T12:00:00.000Z'
+} satisfies DomainData
+
+export const verifiedDomainData = {
+    ...domainData,
+    verified: true,
+    verification: 'completed',
+    mail_from_verified: true,
+    dns: domainData.dns.map((record) => ({
+        ...record,
+        is_valid: true
+    })),
+    updated_at: '2026-06-20T12:05:00.000Z'
+} satisfies DomainData
+
+export const createDomainData = {
+    name: 'example.test',
+    dkim_selectors: ['default'],
+    tracking_subdomain: 'click',
+    tracking_mode: 'cloudflare'
+} satisfies CreateDomainData
+
+export const domainAddressData = {
+    uuid: 'address-uuid',
+    domain_uuid: domainData.uuid,
+    address: 'sender',
+    full_address: 'sender@example.test',
+    provider: 'leadpush',
+    display_name: 'Sender Name',
+    verification: 'completed',
+    updated_at: '2026-06-20T12:10:00.000Z',
+    created_at: '2026-06-20T12:10:00.000Z'
+} satisfies DomainAddressData
+
+export const createDomainAddressData = {
+    address: 'sender',
+    display_name: 'Sender Name',
+    reply_to: 'reply@example.test',
+    company_address: '123 Main St',
+    company_address_2: null,
+    company_city: 'New York',
+    company_state: 'NY',
+    company_zip: '10001',
+    company_country: 'US'
+} satisfies CreateDomainAddressData
 
 export const suppressionData = {
     uuid: 'suppression-id',

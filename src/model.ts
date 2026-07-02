@@ -97,7 +97,7 @@ export abstract class Model<
         return this.requireContext().post<TResponse>(path, data, params)
     }
 
-    protected delete<TResponse>(path: RequestPath, params?: RequestParams): Promise<TResponse> {
+    protected requestDelete<TResponse>(path: RequestPath, params?: RequestParams): Promise<TResponse> {
         return this.requireContext().delete<TResponse>(path, params)
     }
 }
