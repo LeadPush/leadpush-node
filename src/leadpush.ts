@@ -1,4 +1,5 @@
 import { Contacts } from './contacts/contacts'
+import { Domains } from './domains/domains'
 import { Fields } from './fields/fields'
 import { HttpClient, type RequestParams, type RequestPath } from './http'
 import { Suppressions } from './suppressions/suppressions'
@@ -136,6 +137,13 @@ export class Leadpush {
      */
     contacts() {
         return new Contacts(this)
+    }
+
+    /**
+     * Access domain API operations.
+     */
+    domains() {
+        return new Domains(this)
     }
 
     /**

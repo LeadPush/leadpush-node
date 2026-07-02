@@ -185,6 +185,74 @@ for await (const page of client.contacts().cursor({ per_page: 100 })) {
 }
 ```
 
+## Domains
+
+**List Domains**
+
+```ts
+const domains = await client.domains().list({
+  search: 'example',
+  page: 1,
+  per_page: 10
+})
+```
+
+**Create A Domain**
+
+```ts
+const domain = await client.domains().create({
+  name: 'example.com',
+  dkim_selectors: ['default'],
+  tracking_subdomain: 'click',
+  tracking_mode: 'cloudflare'
+})
+
+console.log(domain.dns)
+```
+
+**Verify Or Delete A Domain**
+
+```ts
+const verified = await client.domains().verify(domain.uuid)
+
+await client.domains().delete(domain.uuid)
+```
+
+You can also verify or delete from an attached domain model:
+
+```ts
+const domain = await client.domains().get('domain_uuid')
+
+await domain.verify()
+await domain.delete()
+```
+
+**Domain Addresses**
+
+```ts
+const addresses = await client.domains().addresses('domain_uuid').list()
+
+const address = await client.domains().addresses('domain_uuid').create({
+  address: 'sender',
+  display_name: 'Sender Name',
+  reply_to: 'reply@example.com',
+  company_address: '123 Main St',
+  company_city: 'New York',
+  company_state: 'NY',
+  company_zip: '10001',
+  company_country: 'US'
+})
+
+await client.domains().addresses('domain_uuid').delete(address.uuid)
+```
+
+You can also access addresses from an attached domain model:
+
+```ts
+const domain = await client.domains().get('domain_uuid')
+const addresses = await domain.addresses().list()
+```
+
 ## Fields
 
 **List Fields**
