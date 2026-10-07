@@ -1,5 +1,11 @@
 # @leadpush/sdk-node
 
+## 1.1.0
+
+### Minor Changes
+
+- 95be08c: Add supporting mcp endpoints
+
 ## 1.0.8
 
 ### Patch Changes
