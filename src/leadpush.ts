@@ -1,9 +1,13 @@
+import { Activity } from './activity/activity'
+import { Campaigns } from './campaigns/campaigns'
 import { Contacts } from './contacts/contacts'
 import { Domains } from './domains/domains'
 import { Emails } from './emails/emails'
 import { Fields } from './fields/fields'
 import { HttpClient, type RequestParams, type RequestPath } from './http'
+import { Metrics } from './metrics/metrics'
 import { Suppressions } from './suppressions/suppressions'
+import { Workspace } from './workspaces/workspaces'
 
 declare const __LEADPUSH_SDK_VERSION__: string
 
@@ -138,6 +142,22 @@ export class Leadpush {
      */
     contacts() {
         return new Contacts(this)
+    }
+
+    workspace() {
+        return new Workspace(this)
+    }
+
+    campaigns() {
+        return new Campaigns(this)
+    }
+
+    metrics() {
+        return new Metrics(this)
+    }
+
+    activity() {
+        return new Activity(this)
     }
 
     /**
