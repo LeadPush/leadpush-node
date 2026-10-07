@@ -1,4 +1,5 @@
 import { Entity } from '../entity'
+import type { ListParams, PaginatedResponse } from '../entity'
 import { ContactEvents } from './contact-events'
 import {
     ContactModel,
@@ -12,10 +13,19 @@ interface ContactResponse {
     data: ContactData
 }
 
+export interface ContactListParams extends ListParams {
+    perPage?: number
+    search?: string
+    filters?: Array<{
+        id: 'provider' | 'subscribed'
+        value: Array<string | boolean>
+    }>
+}
+
 /**
  * Contact API resource.
  */
-export class Contacts extends Entity<ContactData, ContactModel, CreateContactData, UpdateContactData> {
+export class Contacts extends Entity<ContactData, ContactModel, CreateContactData, UpdateContactData, ContactListParams> {
     /**
      * API path segment for contacts.
      */
@@ -25,6 +35,17 @@ export class Contacts extends Entity<ContactData, ContactModel, CreateContactDat
      * Model class returned by contact operations.
      */
     override model = ContactModel
+
+    override async list(params: ContactListParams = {}): Promise<PaginatedResponse<ContactModel>> {
+        return await super.list({
+            ...(params.search === undefined ? {} : { search: params.search }),
+            ...(params.filters === undefined ? {} : { filters: params.filters }),
+            ...(params.page === undefined ? {} : { page: params.page }),
+            ...((params.perPage ?? params.per_page) === undefined
+                ? {}
+                : { per_page: params.perPage ?? params.per_page })
+        })
+    }
 
     /**
      * Get a contact by uuid or workspace identity value.

@@ -229,15 +229,21 @@ describe('Contacts', () => {
             }
         })
         const contacts = await createClient().contacts().list({
+            search: 'person',
+            filters: [{ id: 'subscribed', value: [true] }],
             page: 2,
-            per_page: 1
+            perPage: 1
         })
 
         expect(contacts.data[0]).toBeInstanceOf(ContactModel)
         expect(contacts.data[0]?.uuid).toBe(contactData.uuid)
         expect(contacts.meta.total).toBe(88)
-        expect(fetchMock).toHaveBeenCalledWith(`${testBaseUrl}/contacts?page=2&per_page=1`, {
+        expect(fetchMock).toHaveBeenCalledWith(
+            `${testBaseUrl}/contacts?search=person&filters=${encodeURIComponent(JSON.stringify([
+                { id: 'subscribed', value: [true] }
+            ]))}&page=2&per_page=1`, {
             headers: expectedHeaders()
-        })
+            }
+        )
     })
 })
